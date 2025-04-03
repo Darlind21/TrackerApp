@@ -6,7 +6,8 @@ namespace TrackerApp
     {
         public static void Main()
         {
-
+            AppMenu.PrintStartMenu();
+            AppMenu.PrintChooseStatusMenu();
         }
     }
 }
