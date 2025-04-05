@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrackerApp;
 
@@ -11,9 +12,11 @@ using TrackerApp;
 namespace TrackerApp.Migrations
 {
     [DbContext(typeof(TrackerAppDbContext))]
-    partial class TrackerAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250403171658_Changed_DailySummaries_table_design")]
+    partial class Changed_DailySummaries_table_design
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

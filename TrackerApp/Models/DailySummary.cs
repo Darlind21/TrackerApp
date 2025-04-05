@@ -15,9 +15,9 @@ namespace TrackerApp.Models
 
         public DateOnly StatusDate { get; set; }
 
-        public int WorkingDuration { get; set; } //Duration in minutes
-        public int BreakDuration { get; set; }
-        public int AwayDuration { get; set; }
+        public int? WorkingDuration { get; set; } //Duration in minutes
+        public int? BreakDuration { get; set; }
+        public int? AwayDuration { get; set; }
 
         public List<StatusActivity> StatusActivities { get; set; }
 
