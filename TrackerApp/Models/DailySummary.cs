@@ -19,7 +19,7 @@ namespace TrackerApp.Models
         public int? BreakDuration { get; set; }
         public int? AwayDuration { get; set; }
 
-        public List<StatusActivity> StatusActivities { get; set; }
+        public List<StatusActivity> StatusActivities { get; set; } = new List<StatusActivity>();
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,7 +61,9 @@ namespace TrackerApp.Services
         public void EndWorkingStatusActivity(int WorkingActivityId)
         {
             StatusActivity? ToBeChangedActivity = _context.StatusActivities
-                .Find(WorkingActivityId);
+                .Where(sa => sa.Id == WorkingActivityId)
+                .SingleOrDefault();
+
 
             if (ToBeChangedActivity == null)
             {
@@ -75,7 +78,12 @@ namespace TrackerApp.Services
             else
             {
                 ToBeChangedActivity.EndDate = DateTime.Now;
-                ToBeChangedActivity.DailySummary.WorkingDuration += ((int)ToBeChangedActivity.Duration.TotalMinutes);
+                var dailySummaryForWorkingStatusActicity = _context.DailySummaries
+                    .Where(ds => ds.Id == ToBeChangedActivity.DailySummaryId)
+                    .SingleOrDefault();
+
+                dailySummaryForWorkingStatusActicity.WorkingDuration = (dailySummaryForWorkingStatusActicity.WorkingDuration ?? 0) + (int)Math.Round(ToBeChangedActivity.Duration.TotalMinutes);
+                _context.SaveChanges();
             }
 
         }
@@ -120,10 +128,12 @@ namespace TrackerApp.Services
             return BreakStatusActivity.Id;
         }
 
+        
         public void EndBreakStatusActivity(int BreakActivityId)
         {
             StatusActivity? ToBeChangedActivity = _context.StatusActivities
-                .Find(BreakActivityId);
+                .Where(sa => sa.Id == BreakActivityId)
+                .SingleOrDefault();
 
             if (ToBeChangedActivity == null)
             {
@@ -138,7 +148,12 @@ namespace TrackerApp.Services
             else
             {
                 ToBeChangedActivity.EndDate = DateTime.Now;
-                ToBeChangedActivity.DailySummary.BreakDuration += ((int)ToBeChangedActivity.Duration.TotalMinutes);
+                var dailySummaryForBreakStatusActivity = _context.DailySummaries
+                    .Where(ds => ds.Id == ToBeChangedActivity.DailySummaryId)
+                    .SingleOrDefault();
+
+                dailySummaryForBreakStatusActivity.BreakDuration = (dailySummaryForBreakStatusActivity.BreakDuration ?? 0) + (int)Math.Round(ToBeChangedActivity.Duration.TotalMinutes);
+                _context.SaveChanges();
             }
 
         }
@@ -186,7 +201,8 @@ namespace TrackerApp.Services
         public void EndAwayStatusActivity(int AwayActivityId)
         {
             StatusActivity? ToBeChangedActivity = _context.StatusActivities
-                .Find(AwayActivityId);
+                .Where(sa => sa.Id == AwayActivityId)
+                .SingleOrDefault();
 
             if (ToBeChangedActivity == null)
             {
@@ -201,7 +217,12 @@ namespace TrackerApp.Services
             else
             {
                 ToBeChangedActivity.EndDate = DateTime.Now;
-                ToBeChangedActivity.DailySummary.WorkingDuration += ((int)ToBeChangedActivity.Duration.TotalMinutes);
+                var dailySummaryForAwayStatusActivity = _context.DailySummaries
+                    .Where(ds => ds.Id == ToBeChangedActivity.DailySummaryId)
+                    .SingleOrDefault();
+
+                dailySummaryForAwayStatusActivity.AwayDuration = (dailySummaryForAwayStatusActivity.AwayDuration ?? 0) + (int)Math.Round(ToBeChangedActivity.Duration.TotalMinutes);
+                _context.SaveChanges();
             }
 
         }

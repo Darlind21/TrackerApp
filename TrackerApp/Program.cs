@@ -101,6 +101,7 @@ namespace TrackerApp
                     }
 
                 case 0: //Press 0 to quit app
+                    break;
 
                 default:
                     AppMenu.PrintInvalidOption();
