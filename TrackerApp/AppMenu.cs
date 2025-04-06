@@ -10,6 +10,7 @@ namespace TrackerApp
     {
         public static int PrintStartMenu()
         {
+            PrintStartMenu:
             Console.WriteLine
                 (
                     "Press 1 to start tracking" + //triggers PrintChooseStatusMenu
@@ -23,6 +24,11 @@ namespace TrackerApp
                 );
             int result;
             bool isParsed= int.TryParse(Console.ReadLine(), out result);
+            if (!isParsed)
+            {
+                PrintInvalidOption();
+                goto PrintStartMenu;
+            }
             return result;
             //if the TryParse() reads an empty string it returns false and sets result to 0 by default 
 ;        }
@@ -39,6 +45,7 @@ namespace TrackerApp
 
         public static int PrintChooseStatusMenu() 
         {
+            PrintChooseStatusMenu:
             Console.WriteLine
                 (
                     "\nChoose status:" + 
@@ -49,11 +56,18 @@ namespace TrackerApp
                 );
             int result;
             bool isParsed = int.TryParse(Console.ReadLine(), out result);
+
+            if (!isParsed)
+            {
+                PrintInvalidOption();
+                goto PrintChooseStatusMenu; //if the input is not succesfully parse the method calls itself
+            }
             return result;
         }
 
         public static int PrintStatusMenu()
         {
+            PrintStatusMenu:
             Console.WriteLine
                 (
                     "Tracking..." + //Maybe add current status name like Current Status: <StatusName>
@@ -69,7 +83,13 @@ namespace TrackerApp
                 );
 
             int result;
-            bool success = int.TryParse(Console.ReadLine(), out result);
+            bool isParsed = int.TryParse(Console.ReadLine(), out result);
+            if (!isParsed)
+            {
+                PrintInvalidOption();
+                goto PrintStatusMenu; //if the input is not succesfully parse the method calls itself
+            }
+
             return result;
 
         }
