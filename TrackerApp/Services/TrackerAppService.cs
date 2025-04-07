@@ -242,13 +242,14 @@ namespace TrackerApp.Services
 
             var workingSummary = (workingActivity.DailySummary.WorkingDuration ?? 0) + (int)workingActivity.Duration.TotalMinutes;
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine
                 (
                 "\n" +
                 $"You are on {workingActivity.StatusName} status." +
                 $"\nYou have started this status on: {workingActivity.StartDate.ToShortTimeString()}." +
-                $"\nDuration until now for this status: {workingActivity.Duration.TotalMinutes} minutes or {workingActivity.Duration.TotalHours} hours." +
-                $"\nYou have spent a total of {workingSummary} minutes on this status for today"
+                $"\nDuration until now for this status: {workingActivity.Duration.TotalMinutes.ToString("0.0")} minutes or {workingActivity.Duration.TotalHours.ToString("0.0")} hours." +
+                $"\nYou have spent a total of {workingSummary.ToString("0.0")} minutes on this status for today"
                 );
         }
 
@@ -267,13 +268,14 @@ namespace TrackerApp.Services
 
             var breakSummary = (breakActivity.DailySummary.WorkingDuration ?? 0) + (int)breakActivity.Duration.TotalMinutes;
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine
                 (
                 "\n" +
                 $"You are on {breakActivity.StatusName} status." +
                 $"\nYou have started this status on: {breakActivity.StartDate.ToShortTimeString()}." +
-                $"\nDuration until now for this status: {breakActivity.Duration.TotalMinutes} minutes or {breakActivity.Duration.TotalHours} hours." +
-                $"\nYou have spent a total of {breakSummary} minutes on this status for today"
+                $"\nDuration until now for this status: {breakActivity.Duration.TotalMinutes.ToString("0.0")} minutes or {breakActivity.Duration.TotalHours.ToString("0.0")} hours." +
+                $"\nYou have spent a total of {breakSummary.ToString("0.0")} minutes on this status for today"
                 );
         }
 
@@ -292,13 +294,14 @@ namespace TrackerApp.Services
 
             var awaySummary = (awayActivity.DailySummary.AwayDuration ?? 0) + (int)awayActivity.Duration.TotalMinutes;
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine
                 (
                 "\n" +
                 $"You are on {awayActivity.StatusName} status." +
                 $"\nYou have started this status on: {awayActivity.StartDate.ToShortTimeString()}." +
-                $"\nDuration until now for this status: {awayActivity.Duration.TotalMinutes} minutes or {awayActivity.Duration.TotalHours} hours." +
-                $"\nYou have spent a total of {awaySummary} minutes on this status for today"
+                $"\nDuration until now for this status: {awayActivity.Duration.TotalMinutes.ToString("0.0")} minutes or {awayActivity.Duration.TotalHours.ToString("0.0")} hours." +
+                $"\nYou have spent a total of {awaySummary.ToString("0.0")} minutes on this status for today"
                 );
         }
 
@@ -317,20 +320,72 @@ namespace TrackerApp.Services
                 return;
             }
 
-            var todaysStatusActivities = todaysDailySummary.StatusActivities.ToList();
+            var todaysStatusActivities = todaysDailySummary.StatusActivities.OrderBy(sa => sa.StartDate).ToList();
 
+            Console.ForegroundColor = ConsoleColor.Magenta;
+
+            Console.WriteLine("\n");
             foreach (var tsa in todaysStatusActivities)
             {
-                Console.WriteLine($"Status: {tsa.StatusName}, Start Time: {tsa.StartDate.ToShortTimeString()}, " +
-                    $"End Time: {tsa.EndDate?.ToShortTimeString() ?? "Has not ended"}" +
-                    $"\nDuration: {tsa.Duration.TotalMinutes} minutes or {tsa.Duration.TotalHours} hours." +
+                Console.WriteLine($"Status: {tsa.StatusName}, \nStart Time: {tsa.StartDate.ToShortTimeString()}, " +
+                    $"\nEnd Time: {tsa.EndDate?.ToShortTimeString() ?? "Has not ended"}" +
+                    $"\nDuration: {tsa.Duration.TotalMinutes.ToString("0.0")} minutes or {tsa.Duration.TotalHours.ToString("0.0")} hours." +
                     $"\n");
             }
 
+            //we are creating variables for the status the user is on right now so we can add it to the total time spent in that status when displaying daily summary
+            var latestWorkingActivity = todaysDailySummary.StatusActivities
+                .Where(sa => sa.StatusName == "Working")
+                .OrderByDescending(sa => sa.StartDate)
+                .FirstOrDefault();
+
+            int latestWorkingActivityDuration;
+            if (latestWorkingActivity != null)
+            {
+                latestWorkingActivityDuration = (int) latestWorkingActivity.Duration.TotalMinutes;
+            }
+            else
+            {
+                latestWorkingActivityDuration = 0;
+            }
+
+
+            var latestBreakActivity = todaysDailySummary.StatusActivities
+                .Where(sa => sa.StatusName == "Break")
+                .OrderByDescending(sa => sa.StartDate)
+                .FirstOrDefault();
+
+            int latestBreakActivityDuration;
+            if (latestBreakActivity != null)
+            {
+                latestBreakActivityDuration = (int)latestBreakActivity.Duration.TotalMinutes;
+            }
+            else
+            {
+                latestBreakActivityDuration = 0;
+            }
+
+
+            var latestAwayActivity = todaysDailySummary.StatusActivities
+                .Where(sa => sa.StatusName == "Away")
+                .OrderByDescending(sa => sa.StartDate)
+                .FirstOrDefault();
+
+            int latestAwayActivityDuration;
+            if (latestAwayActivity != null)
+            {
+                latestAwayActivityDuration = (int)latestAwayActivity.Duration.TotalMinutes;
+            }
+            else
+            {
+                latestAwayActivityDuration = 0;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{todaysDailySummary.StatusDate.ToString("d")} -- Does not include current status duration " +
-                $"\n=> Total time spent on WORKING: {todaysDailySummary.WorkingDuration} minutes." +
-                $"\n=> Total time spent on BREAK: {todaysDailySummary.BreakDuration} minutes." +
-                $"\n=> Total time spent on AWAY: {todaysDailySummary.AwayDuration} minutes." +
+                $"\n=> Total time spent on WORKING: {todaysDailySummary.WorkingDuration + latestWorkingActivityDuration} minutes." +
+                $"\n=> Total time spent on BREAK: {todaysDailySummary.BreakDuration + latestBreakActivityDuration} minutes." +
+                $"\n=> Total time spent on AWAY: {todaysDailySummary.AwayDuration + latestAwayActivityDuration} minutes." +
                 $"\n");
         }
     }

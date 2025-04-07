@@ -10,7 +10,8 @@ namespace TrackerApp
     {
         public static int PrintStartMenu()
         {
-            PrintStartMenu:
+        PrintStartMenu:
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine
                 (
                     "Press 1 to start tracking" + //triggers PrintChooseStatusMenu
@@ -35,17 +36,20 @@ namespace TrackerApp
 
         public static void PrintEnterCustomDate()
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Enter custom date");
         }
 
         public static void PrintInvalidOption()
         {
-            Console.WriteLine("Invalid option");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nInvalid option\n");
         }
 
         public static int PrintChooseStatusMenu() 
         {
             PrintChooseStatusMenu:
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine
                 (
                     "\nChoose status:" + 
@@ -68,9 +72,10 @@ namespace TrackerApp
         public static int PrintStatusMenu()
         {
             PrintStatusMenu:
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine
                 (
-                    "Tracking..." + //Maybe add current status name like Current Status: <StatusName>
+                    "\nTracking..." + //Maybe add current status name like Current Status: <StatusName>
                     "\nPress 1 to display current status details for today" +
                     //should display StartTime for current status activity for today
                     //should display duration for current status activity until now
