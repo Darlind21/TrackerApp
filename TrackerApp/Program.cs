@@ -26,8 +26,12 @@ namespace TrackerApp
                                 switch (workingStatusMenuResult)
                                 {
                                     case 1:
+                                        service.DisplayWorkingStatusActivityDetails(workingStatusId);
+                                    goto WorkingStatusMenu;
 
                                     case 2:
+                                        service.DisplayTodaysStatusActivitiesAndSummary();
+                                    goto WorkingStatusMenu;
 
                                     case 3:
                                         service.EndWorkingStatusActivity(workingStatusId);//Press 1 to start tracking - Press 1 to select WORKING - Press 3 to change Status
@@ -50,8 +54,12 @@ namespace TrackerApp
                                 switch (breakStatusMenuResult)
                                 {
                                     case 1:
+                                        service.DisplayBreakStatusActivityDetails(breakStatusId);
+                                    goto BreaktatusMenu;
 
                                     case 2:
+                                        service.DisplayTodaysStatusActivitiesAndSummary();
+                                    goto BreaktatusMenu;
 
                                     case 3: //Press 1 to start tracking - Press 1 to select BREAK - Press 3 to change Status
                                         service.EndBreakStatusActivity(breakStatusId);
@@ -75,8 +83,12 @@ namespace TrackerApp
                                 switch (awayStatusMenuResult)
                                 {
                                     case 1:
+                                        service.DisplayAwayStatusActivityDetails(awayStatusId);
+                                    goto AwayStatusMenu;
 
                                     case 2:
+                                        service.DisplayTodaysStatusActivitiesAndSummary();
+                                    goto AwayStatusMenu;
 
                                     case 3: //Press 1 to start tracking - Press 1 to select AWAY - Press 3 to change Status
                                         service.EndAwayStatusActivity(awayStatusId);

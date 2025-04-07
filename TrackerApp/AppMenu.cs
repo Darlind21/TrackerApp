@@ -52,7 +52,7 @@ namespace TrackerApp
                     "\nPress 1 to select WORKING" + //Triggers PrintStatusMenu()
                     "\nPress 2 to select BREAK" + //Triggers PrintStatusMenu()
                     "\nPress 3 to select AWAY" + //Triggers PrintStatusMenu()
-                    "\nPress 0 to quit app" 
+                    "\nPress 0 to go to Start Menu" 
                 );
             int result;
             bool isParsed = int.TryParse(Console.ReadLine(), out result);
