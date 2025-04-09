@@ -266,7 +266,7 @@ namespace TrackerApp.Services
                 return;
             }
 
-            var breakSummary = (breakActivity.DailySummary.WorkingDuration ?? 0) + (int)breakActivity.Duration.TotalMinutes;
+            var breakSummary = (breakActivity.DailySummary.BreakDuration ?? 0) + (int)breakActivity.Duration.TotalMinutes;
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine
@@ -316,7 +316,7 @@ namespace TrackerApp.Services
 
             if (todaysDailySummary == null)
             {
-                Console.WriteLine("Daily summary not found");
+                Console.WriteLine("Daily summary not found or you have not started tracking for today yet");
                 return;
             }
 
@@ -387,6 +387,32 @@ namespace TrackerApp.Services
                 $"\n=> Total time spent on BREAK: {todaysDailySummary.BreakDuration + latestBreakActivityDuration} minutes." +
                 $"\n=> Total time spent on AWAY: {todaysDailySummary.AwayDuration + latestAwayActivityDuration} minutes." +
                 $"\n");
+        }
+
+        public void CleanUpBeforeExit()
+        {
+            var unendedStatusActivity = _context.StatusActivities
+                .OrderByDescending(sa => sa.StartDate)
+                .Where(sa => sa.EndDate == null)
+                .FirstOrDefault();
+
+            if (unendedStatusActivity == null)
+            {
+                return;
+            }
+
+            if (unendedStatusActivity.StatusName == "Working")
+            {
+                EndWorkingStatusActivity(unendedStatusActivity.Id);
+            }
+            else if (unendedStatusActivity.StatusName == "Break")
+            {
+                EndBreakStatusActivity(unendedStatusActivity.Id);
+            }
+            else if(unendedStatusActivity.StatusName == "Away")
+            {
+                EndAwayStatusActivity(unendedStatusActivity.Id);
+            }
         }
     }
 }

@@ -9,6 +9,11 @@ namespace TrackerApp
         {
             var service = new TrackerAppService();
 
+            AppDomain.CurrentDomain.ProcessExit += (sender, e) =>
+            {
+                service.CleanUpBeforeExit();
+            };
+
             StartMenu:
             int startResult = AppMenu.PrintStartMenu();
             switch (startResult)
@@ -23,7 +28,8 @@ namespace TrackerApp
 
                             WorkingStatusMenu:
                             int workingStatusMenuResult = AppMenu.PrintStatusMenu();
-                                switch (workingStatusMenuResult)
+                                
+                            switch (workingStatusMenuResult)
                                 {
                                     case 1:
                                         service.DisplayWorkingStatusActivityDetails(workingStatusId);
