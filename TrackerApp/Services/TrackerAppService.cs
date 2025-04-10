@@ -382,11 +382,38 @@ namespace TrackerApp.Services
             }
 
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"{todaysDailySummary.StatusDate.ToString("d")} -- Does not include current status duration " +
+            Console.WriteLine($"{todaysDailySummary.StatusDate.ToString("d")} " +
                 $"\n=> Total time spent on WORKING: {todaysDailySummary.WorkingDuration + latestWorkingActivityDuration} minutes." +
                 $"\n=> Total time spent on BREAK: {todaysDailySummary.BreakDuration + latestBreakActivityDuration} minutes." +
                 $"\n=> Total time spent on AWAY: {todaysDailySummary.AwayDuration + latestAwayActivityDuration} minutes." +
                 $"\n");
+        }
+
+        public void DisplayLastSevenDaysSummary()
+        {
+            var lastSevenDaysSummary = _context.DailySummaries
+                .OrderByDescending(ds => ds.StatusDate)
+                .Take(7)
+                .OrderBy(ds => ds.StatusDate)
+                .ToList();
+
+            if (lastSevenDaysSummary.Count == 0)
+            {
+                Console.WriteLine("You do not have any daily summaries yet");
+                return;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Showing daily summaries for the past {lastSevenDaysSummary.Count()} days. \n");
+
+            foreach (var ds in lastSevenDaysSummary)
+            {
+                Console.WriteLine($"{ds.StatusDate.ToString("d")} " +
+                $"\n=> Total time spent on WORKING: {ds.WorkingDuration ?? 0} minutes." +
+                $"\n=> Total time spent on BREAK: {ds.BreakDuration ?? 0 } minutes." +
+                $"\n=> Total time spent on AWAY: {ds.AwayDuration ?? 0} minutes." +
+                $"\n");
+            }
         }
 
         public void CleanUpBeforeExit()

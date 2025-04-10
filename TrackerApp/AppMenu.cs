@@ -15,13 +15,13 @@ namespace TrackerApp
             Console.WriteLine
                 (
                     "Press 1 to start tracking" + //triggers PrintChooseStatusMenu
-                    //"\nPress 2 to display today's Status Activities and Summary" +
-                    //"\nPress 3 to display current week's Summary"+
+                    "\nPress 2 to display today's Status Activities and Summary" +
+                    "\nPress 3 to display last 7 days' Summary" +
                     //"\nPress 4 to display current month's Summary" +
                     //"\nPress 5 to display all time Summary" +
                     //"\nPress 6 to select 1 custom date to to display its Status Activities and Summary" + //triggers PrintEnterCustomDate()
                     //"\nPress 7 to select custom dates to display Summary" + //triggers PrintEnterCustomDate() twice
-                    "\nPress 0 to quit app " 
+                    "\nPress 0 to quit app "
                 );
             int result;
             bool isParsed= int.TryParse(Console.ReadLine(), out result);
@@ -32,7 +32,7 @@ namespace TrackerApp
             }
             return result;
             //if the TryParse() reads an empty string it returns false and sets result to 0 by default 
-;        }
+;       }
 
         public static void PrintEnterCustomDate()
         {

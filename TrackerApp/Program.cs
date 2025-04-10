@@ -55,17 +55,17 @@ namespace TrackerApp
                         case 2: //Press 1 to start tracking - Press 2 to select Break
                             int breakStatusId = service.CreateBreakStatusActivity();
 
-                            BreaktatusMenu:
+                            BreakStatusMenu:
                             int breakStatusMenuResult = AppMenu.PrintStatusMenu();
                                 switch (breakStatusMenuResult)
                                 {
                                     case 1:
                                         service.DisplayBreakStatusActivityDetails(breakStatusId);
-                                    goto BreaktatusMenu;
+                                    goto BreakStatusMenu;
 
                                     case 2:
                                         service.DisplayTodaysStatusActivitiesAndSummary();
-                                    goto BreaktatusMenu;
+                                    goto BreakStatusMenu;
 
                                     case 3: //Press 1 to start tracking - Press 1 to select BREAK - Press 3 to change Status
                                         service.EndBreakStatusActivity(breakStatusId);
@@ -77,7 +77,7 @@ namespace TrackerApp
 
                                     default:
                                         AppMenu.PrintInvalidOption();
-                                    goto BreaktatusMenu;
+                                    goto BreakStatusMenu;
 
                                 }
 
@@ -120,6 +120,14 @@ namespace TrackerApp
 
                 case 0: //Press 0 to quit app
                     break;
+
+                case 2:
+                    service.DisplayTodaysStatusActivitiesAndSummary();
+                goto StartMenu;
+
+                case 3:
+                    service.DisplayLastSevenDaysSummary();
+                goto StartMenu;
 
                 default:
                     AppMenu.PrintInvalidOption();
