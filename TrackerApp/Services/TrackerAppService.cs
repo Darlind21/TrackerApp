@@ -8,7 +8,7 @@ using TrackerApp.Models;
 
 namespace TrackerApp.Services
 {
-    public class TrackerAppService
+    public class TrackerAppService : IDisposable
     {
         private readonly TrackerAppDbContext _context;
         public TrackerAppService()
@@ -16,6 +16,27 @@ namespace TrackerApp.Services
             _context = new TrackerAppDbContext();
         }
 
+        private bool _disposed = false;
+        public void Dispose()
+        {
+            // Call the protected Dispose method with true 
+            Dispose(true);
+            // Tell Garbage Collector not to finalize this object
+            //In plain english tells the GC that it is already disposed so no need to do it again 
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context?.Dispose();
+                }
+                _disposed = true;
+            }
+        }
 
         public int CreateWorkingStatusActivity() //returns Id of created activity in order to make it easier to find Working activity to be 
                                                  //ended by EndWorkingStatusActivity().

@@ -7,133 +7,135 @@ namespace TrackerApp
     {
         public static void Main()
         {
-            var service = new TrackerAppService();
 
-            AppDomain.CurrentDomain.ProcessExit += (sender, e) =>
+            using (var service = new TrackerAppService())
             {
-                service.CleanUpBeforeExit();
-            };
+                AppDomain.CurrentDomain.ProcessExit += (sender, e) =>
+                {
+                    service.CleanUpBeforeExit();
+                    service.Dispose();
+                };
 
-            StartMenu:
-            int startResult = AppMenu.PrintStartMenu();
-            switch (startResult)
-            {
-                case 1: //After - Press 1 to start tracking
-                    ChooseStatusMenu:
-                    int chosenStatusResult = AppMenu.PrintChooseStatusMenu();
-                    switch (chosenStatusResult) //choose from statuses menu
-                    {
-                        case 1: //Press 1 to start tracking - Press 1 to select WORKING
-                            int workingStatusId = service.CreateWorkingStatusActivity();
+                StartMenu:
+                int startResult = AppMenu.PrintStartMenu();
+                switch (startResult)
+                {
+                    case 1: //After - Press 1 to start tracking
+                        ChooseStatusMenu:
+                        int chosenStatusResult = AppMenu.PrintChooseStatusMenu();
+                        switch (chosenStatusResult) //choose from statuses menu
+                        {
+                            case 1: //Press 1 to start tracking - Press 1 to select WORKING
+                                int workingStatusId = service.CreateWorkingStatusActivity();
 
-                            WorkingStatusMenu:
-                            int workingStatusMenuResult = AppMenu.PrintStatusMenu();
+                                WorkingStatusMenu:
+                                int workingStatusMenuResult = AppMenu.PrintStatusMenu();
                                 
-                            switch (workingStatusMenuResult)
-                                {
-                                    case 1:
-                                        service.DisplayWorkingStatusActivityDetails(workingStatusId);
-                                    goto WorkingStatusMenu;
+                                switch (workingStatusMenuResult)
+                                    {
+                                        case 1:
+                                            service.DisplayWorkingStatusActivityDetails(workingStatusId);
+                                        goto WorkingStatusMenu;
 
-                                    case 2:
-                                        service.DisplayTodaysStatusActivitiesAndSummary();
-                                    goto WorkingStatusMenu;
+                                        case 2:
+                                            service.DisplayTodaysStatusActivitiesAndSummary();
+                                        goto WorkingStatusMenu;
 
-                                    case 3:
-                                        service.EndWorkingStatusActivity(workingStatusId);//Press 1 to start tracking - Press 1 to select WORKING - Press 3 to change Status
-                                    goto ChooseStatusMenu;
+                                        case 3:
+                                            service.EndWorkingStatusActivity(workingStatusId);//Press 1 to start tracking - Press 1 to select WORKING - Press 3 to change Status
+                                        goto ChooseStatusMenu;
 
-                                    case 0: //Press 1 to start tracking - Press 1 to select WORKING - Press 0 to stop tracking
-                                        service.EndWorkingStatusActivity(workingStatusId);
-                                    goto StartMenu;
+                                        case 0: //Press 1 to start tracking - Press 1 to select WORKING - Press 0 to stop tracking
+                                            service.EndWorkingStatusActivity(workingStatusId);
+                                        goto StartMenu;
 
-                                    default:
-                                        AppMenu.PrintInvalidOption();
-                                    goto WorkingStatusMenu;
-                                }
+                                        default:
+                                            AppMenu.PrintInvalidOption();
+                                        goto WorkingStatusMenu;
+                                    }
 
-                        case 2: //Press 1 to start tracking - Press 2 to select Break
-                            int breakStatusId = service.CreateBreakStatusActivity();
+                            case 2: //Press 1 to start tracking - Press 2 to select Break
+                                int breakStatusId = service.CreateBreakStatusActivity();
 
-                            BreakStatusMenu:
-                            int breakStatusMenuResult = AppMenu.PrintStatusMenu();
-                                switch (breakStatusMenuResult)
-                                {
-                                    case 1:
-                                        service.DisplayBreakStatusActivityDetails(breakStatusId);
-                                    goto BreakStatusMenu;
+                                BreakStatusMenu:
+                                int breakStatusMenuResult = AppMenu.PrintStatusMenu();
+                                    switch (breakStatusMenuResult)
+                                    {
+                                        case 1:
+                                            service.DisplayBreakStatusActivityDetails(breakStatusId);
+                                        goto BreakStatusMenu;
 
-                                    case 2:
-                                        service.DisplayTodaysStatusActivitiesAndSummary();
-                                    goto BreakStatusMenu;
+                                        case 2:
+                                            service.DisplayTodaysStatusActivitiesAndSummary();
+                                        goto BreakStatusMenu;
 
-                                    case 3: //Press 1 to start tracking - Press 1 to select BREAK - Press 3 to change Status
-                                        service.EndBreakStatusActivity(breakStatusId);
-                                    goto ChooseStatusMenu;
+                                        case 3: //Press 1 to start tracking - Press 1 to select BREAK - Press 3 to change Status
+                                            service.EndBreakStatusActivity(breakStatusId);
+                                        goto ChooseStatusMenu;
 
-                                    case 0: //Press 1 to start tracking - Press 1 to select BREAK - Press 0 to stop tracking
-                                        service.EndBreakStatusActivity(breakStatusId);
-                                    goto StartMenu; 
+                                        case 0: //Press 1 to start tracking - Press 1 to select BREAK - Press 0 to stop tracking
+                                            service.EndBreakStatusActivity(breakStatusId);
+                                        goto StartMenu; 
 
-                                    default:
-                                        AppMenu.PrintInvalidOption();
-                                    goto BreakStatusMenu;
+                                        default:
+                                            AppMenu.PrintInvalidOption();
+                                        goto BreakStatusMenu;
 
-                                }
+                                    }
 
-                        case 3: //Press 1 to start tracking - Press 3 to select Away
-                            int awayStatusId = service.CreateAwayStatusActivity();
+                            case 3: //Press 1 to start tracking - Press 3 to select Away
+                                int awayStatusId = service.CreateAwayStatusActivity();
 
-                            AwayStatusMenu:
-                                int awayStatusMenuResult = AppMenu.PrintStatusMenu();
-                                switch (awayStatusMenuResult)
-                                {
-                                    case 1:
-                                        service.DisplayAwayStatusActivityDetails(awayStatusId);
-                                    goto AwayStatusMenu;
+                                AwayStatusMenu:
+                                    int awayStatusMenuResult = AppMenu.PrintStatusMenu();
+                                    switch (awayStatusMenuResult)
+                                    {
+                                        case 1:
+                                            service.DisplayAwayStatusActivityDetails(awayStatusId);
+                                        goto AwayStatusMenu;
 
-                                    case 2:
-                                        service.DisplayTodaysStatusActivitiesAndSummary();
-                                    goto AwayStatusMenu;
+                                        case 2:
+                                            service.DisplayTodaysStatusActivitiesAndSummary();
+                                        goto AwayStatusMenu;
 
-                                    case 3: //Press 1 to start tracking - Press 1 to select AWAY - Press 3 to change Status
-                                        service.EndAwayStatusActivity(awayStatusId);
-                                    goto ChooseStatusMenu;
+                                        case 3: //Press 1 to start tracking - Press 1 to select AWAY - Press 3 to change Status
+                                            service.EndAwayStatusActivity(awayStatusId);
+                                        goto ChooseStatusMenu;
 
-                                    case 0: //Press 1 to start tracking - Press 1 to select BREAK - Press 0 to stop tracking
-                                        service.EndAwayStatusActivity(awayStatusId);
-                                    goto StartMenu;
+                                        case 0: //Press 1 to start tracking - Press 1 to select BREAK - Press 0 to stop tracking
+                                            service.EndAwayStatusActivity(awayStatusId);
+                                        goto StartMenu;
 
-                                    default:
-                                        AppMenu.PrintInvalidOption();
-                                    goto AwayStatusMenu;
+                                        default:
+                                            AppMenu.PrintInvalidOption();
+                                        goto AwayStatusMenu;
 
-                                }
+                                    }
 
-                        case 0: //Press 1 to start tracking - Press 0 to  quit app
-                            goto StartMenu;
+                            case 0: //Press 1 to start tracking - Press 0 to  quit app
+                                goto StartMenu;
 
-                        default:
-                            AppMenu.PrintInvalidOption();
-                        goto ChooseStatusMenu;
-                    }
+                            default:
+                                AppMenu.PrintInvalidOption();
+                            goto ChooseStatusMenu;
+                        }
 
-                case 0: //Press 0 to quit app
-                    break;
+                    case 0: //Press 0 to quit app
+                        break;
 
-                case 2:
-                    service.DisplayTodaysStatusActivitiesAndSummary();
-                goto StartMenu;
+                    case 2:
+                        service.DisplayTodaysStatusActivitiesAndSummary();
+                    goto StartMenu;
 
-                case 3:
-                    service.DisplayLastSevenDaysSummary();
-                goto StartMenu;
+                    case 3:
+                        service.DisplayLastSevenDaysSummary();
+                    goto StartMenu;
 
-                default:
-                    AppMenu.PrintInvalidOption();
-                goto StartMenu;
+                    default:
+                        AppMenu.PrintInvalidOption();
+                    goto StartMenu;
+                }
             }
-
         }
     }
 }

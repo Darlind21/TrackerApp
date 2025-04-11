@@ -16,7 +16,7 @@ namespace TrackerApp
 
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-O0OAK89\SQLEXPRESS;Database=TrackerApp;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-O0OAK89\SQLEXPRESS;Database=TrackerApp;Initial Catalog=TrackerApp;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True");
         }
     }
 }
