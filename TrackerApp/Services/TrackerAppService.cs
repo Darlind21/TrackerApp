@@ -361,7 +361,7 @@ namespace TrackerApp.Services
                 .FirstOrDefault();
 
             int latestWorkingActivityDuration;
-            if (latestWorkingActivity != null)
+            if (latestWorkingActivity != null && latestWorkingActivity.EndDate == null)
             {
                 latestWorkingActivityDuration = (int) latestWorkingActivity.Duration.TotalMinutes;
             }
@@ -377,7 +377,7 @@ namespace TrackerApp.Services
                 .FirstOrDefault();
 
             int latestBreakActivityDuration;
-            if (latestBreakActivity != null)
+            if (latestBreakActivity != null && latestBreakActivity.EndDate == null)
             {
                 latestBreakActivityDuration = (int)latestBreakActivity.Duration.TotalMinutes;
             }
@@ -393,11 +393,13 @@ namespace TrackerApp.Services
                 .FirstOrDefault();
 
             int latestAwayActivityDuration;
-            if (latestAwayActivity != null)
+            if (latestAwayActivity != null && latestAwayActivity.EndDate == null)
+            //only if a StatusActivity is found and it has not ended it will be added to latestAwayActivityDuration
             {
                 latestAwayActivityDuration = (int)latestAwayActivity.Duration.TotalMinutes;
             }
             else
+            //otherwise latestAwayActivityDuration will be counted as 0 because it was counted when we ended the StatusActivity 
             {
                 latestAwayActivityDuration = 0;
             }
