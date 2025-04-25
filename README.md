@@ -1,1 +1,1 @@
-# TrackerApp
+This is a console app that I have created for personal use using .Net 8 and EF Core 8. Its sole purpose is to track "statuses" during the time the app is running. I can switch between 3 statuses at the time being: Working, Break, and Away. The purpose of creating this app is so I can see how I spent my time during the day and track my goals and therefore see how much I have worked/studied, and on breaks. The goal for the moment is for this app to stay opened for 4 hours a day with a 15 min break allowed and away status no more than 10 mins.
